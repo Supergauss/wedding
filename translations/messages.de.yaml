@@ -1,0 +1,18 @@
+Number guests invited: Anzahl der Gäste
+Number guests promised: Anzahl zugesagt
+Date invited: Datum der Einladung per Whatsapp
+Date promised: Datum der Zusage
+Date must promise: Datum bis zu dem zugesagt werden muss
+Name: Name
+Is family: Familienmitglied
+Phone: Telefonnummer
+
+guest_type:
+  multi:
+    label: Mehrere Freunde/Mehrere Familienmitglieder
+  single_male:
+    label: Ein Freund/Ein männliches Familienmitglied
+  single_female:
+    label: Eine Freundin/Ein weibliches Familienmitglied
+Promised: Natürlich komme ich gerne und feiere mit Euch.
+Guest comment: Ich habe noch folgende Rückfragen / Tipps / Anmerkungen

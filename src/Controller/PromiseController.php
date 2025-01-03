@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Invitation;
+use App\Form\PromiseType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class PromiseController extends AbstractController
+{
+    #[Route('', name: 'app_index')]
+    public function index(): Response
+    {
+        return $this->render('index.html.twig');
+    }
+
+    #[Route('/promise/{id}', name: 'promise', methods: ['GET', 'POST'])]
+    public function familyPromise(string $id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $invitation = $entityManager->getRepository(Invitation::class)->find($id);
+        if ($invitation instanceof Invitation) {
+            if ($invitation->getDatePromised()) {
+                $successMessage = 'Du hast bereits zugesagt, danke!';
+                if ($invitation->getNumberGuestsInvited() > 1) {
+                    $successMessage = 'Ihr habt bereits zugesagt, danke!';
+                }
+                $this->addFlash('success', $successMessage);
+                return $this->render('promise/index.html.twig', [
+                    'invitation' => $invitation
+                ]);
+            }
+            if ($invitation->getDateMustPromise()->format('U') > time()) {
+                $form = $this->createForm(PromiseType::class, $invitation);
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    /** @var Invitation $invitation */
+                    $invitation = $form->getData();
+                    $invitation->setDatePromised(new \DateTime());
+
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Vielen Dank für die Zusage');
+                    return $this->redirectToRoute('app_index');
+                }
+                return $this->render('promise/index.html.twig', [
+                    'invitation' => $invitation, 'form' => $form->createView()
+                ]);
+            } else {
+                $this->addFlash('danger', 'Der Zusagezeitraum ist abgelaufen');
+                return $this->redirect($this->generateUrl('app_index'));
+            }
+        } else {
+
+            $this->addFlash('danger', 'Anscheinend wurden Sie aber nicht eingeladen, schade schade');
+            return $this->redirect($this->generateUrl('app_index'));
+        }
+    }
+}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einladung{% endblock %}
+
+ {% block coverheading %}
+     <h1 class="cover-heading">Susanna & Dennis</h1>
+     <h2 class="cover-heading">Wir trauen uns!</h2>
+ {% endblock %}
+{% block covercontent %}
+    <p class="lead mt-5">
+        {{ invitation.salutation.value }}  {{ invitation.name }},<br><br>
+
+        wir möchten {{ akkusativ(invitation) }} gerne zu unserer Hochzeit einladen. </p>
+    <hr>
+    <h3><i class="fa-solid fa-calendar-days"></i> Wann</h3>
+    <p class="lead">28.05.2025 | 16 Uhr</p>
+    <hr>
+    <h3><i class="fa-solid fa-location-dot"></i> Wo</h3>
+    <p class="lead">Trauzimmer Ilsfeld<br><br>
+        <a href="https://maps.app.goo.gl/bQnSK9Wvxk51FV4m9" target="_blank">Anfahrt</a>
+    </p>
+    <hr>
+    <h3><i class="fa-solid fa-timeline"></i> Ablauf</h3>
+    <p class="lead">Wir starten um 16 Uhr mit der standesamtlichen Trauung, die ca. 1h dauert und freuen uns, danach
+        mit {{ dativ(invitation) }} auf dem Platz davor mit Sekt, Bier und Co. anzustossen.</p>
+    <hr>
+    {% if invitation.isfamily %}
+    <h3><i class="fa-solid fa-utensils"></i> Restaurant</h3>
+    <p class="lead">Im <a href="https://www.landhaus-hohly.de/home.html" target="_blank">Landhaus Holy</a> wollen wir
+        mit Euch lecker essen und den Abend mit Euch ausklingen lassen.<br><br>
+
+        <a href="https://maps.app.goo.gl/dbJNegoksLFi8w5U7" target="_blank">Anfahrt</a></p>
+    <hr>
+{% endif %}
+    <h3><i class="fa-regular fa-calendar-check"></i> Zusage</h3>
+    <p class="lead">
+    {% include 'flash_messages.html.twig' %}
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {% if form.number_guests_promised is defined %}
+            {{ form_row(form.number_guests_promised) }}
+        {% endif %}
+        {{ form_row(form.promised) }}
+        {{ form_row(form.guest_comment) }}
+        <button type="submit" class="btn btn-primary mt-5 float-end">Speichern</button>
+        {{ form_end(form) }}</p>
+    {% endif %}
+{% endblock %}

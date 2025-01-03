@@ -1,0 +1,46 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Anmeldung Administrationsbereich{% endblock %}
+
+{% block body %}
+    <div class="text-center form-signin-backend">
+        <div class="form-signin mt-5">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.userIdentifier }}, <a
+                                href="{{ path('admin_app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+                <h2>Anmeldung Administrationsbereich</h2>
+                <div class="form-floating">
+                    <input type="text" value="{{ last_username }}" name="_username" id="floatingInput" class="form-control"
+                           autocomplete="username" required autofocus>
+                    <label for="floatingInput">Benutzername</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" name="_password"  class="form-control" id="floatingPassword" autocomplete="current-password" required>
+                    <label for="floatingPassword">Passwort</label>
+                </div>
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+
+                {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <input type="checkbox" name="_remember_me" id="_remember_me">
+                    <label for="_remember_me">Remember me</label>
+                </div>
+                #}
+                <button class="w-100 mt-3 btn btn-lg btn-primary" type="submit">Anmelden</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

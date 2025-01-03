@@ -1,0 +1,98 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Anmeldung Administrationsbereich{% endblock %}
+
+{% block body %}
+    <main class="container-fluid mt-5">
+        <h1>Hochzeit Susanna & Dennis</h1>
+        {% include 'flash_messages.html.twig' %}
+
+        <a class="btn btn-lg btn-primary float-end mb-5" href="{{ path('admin_invitation_new') }}" role="button">Neuen
+            Gast anlegen</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Anrede
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Familie
+                </th>
+                <th>
+                    Zusage / Absage
+                </th>
+                <th>
+                    Anzahl der Gäste
+                </th>
+                <th>
+                    Anzahl zugesagt
+                </th>
+                <th>
+                    Datum der Einladung per Whatsapp
+                </th>
+                <th>
+                    Datum der Zusage
+                </th>
+                <th>
+                    Datum bis zu dem zugesagt werden muss
+                </th>
+                <th>
+                    Kommentar Gast
+                </th>
+                <th>
+                    Link zu Einladung
+                </th>
+                <th>
+                    Aktionen
+                </th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+            {% for invitation in existingInvitations %}
+                <tr>
+                    <td>{{ invitation.salutation | trans }}</td>
+                    <td>{{ invitation.name }}</td>
+                    <td>{{ invitation.isfamily ? 'Ja' : 'Nein' }}</td>
+                    <td>
+                        {% if invitation.ispromised is same as(false) %}
+                            Absage
+                        {% elseif invitation.ispromised is same as(true) %}
+                            Zusage
+                        {% else %}
+                            Noch keine Rückmeldung
+                        {% endif %}
+                    </td>
+                    <td>{{ invitation.numberguestsinvited }}</td>
+                    <td>{{ invitation.numberguestspromised }}</td>
+                    <td>
+                        {% if invitation.dateinvited is not null %}
+                            {{ invitation.dateinvited|date("d.m.Y") }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if invitation.datepromised is not null %}
+                            {{ invitation.datepromised|date("d.m.Y") }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if invitation.datemustpromise is not null %}
+                            {{ invitation.datemustpromise|date("d.m.Y") }}
+                        {% endif %}
+                    </td>
+                    <td>{{ invitation.guestcomment }}</td>
+                    <td>{{ promiseLink(invitation)| raw }}</td>
+                    <td class="text-nowrap">
+                        <a href="{{ path('admin_invitation_delete', {id: invitation.id}) }}" class="btn border border-secondary"><i class="fa-solid fa-box-archive"></i></a>
+                        <a href="{{ path('admin_invitation_edit', {id: invitation.id}) }}" class="btn border border-secondary"><i class="fa-solid fa-pencil"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

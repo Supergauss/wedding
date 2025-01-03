@@ -1,0 +1,16 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Gast anlegen / bearbeiten{% endblock %}
+
+{% block body %}
+   <main class="container mt-5">
+      <h1>Gast anlegen / bearbeiten</h1>
+      {{ form_start(form) }}
+      {{ form_row(form.salutation) }}
+      {{ form_row(form.name) }}
+      {{ form_row(form.is_family) }}
+      {{ form_row(form.number_guests_invited) }}
+      <button type="submit" class="btn btn-primary mt-5 float-end">Speichern</button>
+      {{ form_end(form) }}
+   </main>
+{% endblock %}
