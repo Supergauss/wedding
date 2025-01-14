@@ -34,4 +34,22 @@ jobs:
           context: .
           file: ./docker/webserver/Dockerfile
           push: true
-          tags: snooops/nabu:${{ env.shorttag }}  
+          tags: snooops/wedding:${{ env.shorttag }}
+
+      - name: Setup docker-compose.yml
+        uses: rondefreitas/jinja2-action@v1.2.3
+        with:
+          template: docker/docker-compose.yml.j2
+          output_file: docker/docker-compose.yml
+          strict: true
+          variables: |
+            shorttag=${{ env.shorttag }}
+  
+      - name: Commit docker-compose.yml
+        working-directory: website
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add docker/docker-compose.yml
+          git commit -am "Automated docker-compose"
+          git push
