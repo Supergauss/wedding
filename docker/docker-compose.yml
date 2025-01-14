@@ -46,12 +46,12 @@ services:
     ports:
       - '${DB_PORT}:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: aljhgf13)17fgh1GKFASF
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASS}"
       MYSQL_DATABASE: "${MYSQL_DB}"
     healthcheck:
-      test: "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} --password=${MYSQL_PASS}"
+      test: "mysqladmin ping -h 127.0.0.1 -uroot --password=${MYSQL_ROOT_PASSWORD}"
       interval: 5s
       retries: 5
     networks:
