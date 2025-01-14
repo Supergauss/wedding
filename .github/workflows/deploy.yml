@@ -49,4 +49,4 @@ jobs:
           commit_user_email: snooops@dns-serve.de
 
       - name: Trigger Portainer deployment
-        run: curl  -S -s -o /dev/null ${{ secrets.PORTAINER_WEBHOOK }}
+        run: curl -X POST -s ${{ secrets.PORTAINER_WEBHOOK }}
