@@ -5,7 +5,7 @@ networks:
 
 services:
   webserver:
-    image: snooops/wedding:cea22ca
+    image: snooops/wedding:1ac8538
     container_name: '${APP_NAME}-server'
     ports:
       - '${APP_PORT}:80'
@@ -36,7 +36,6 @@ services:
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.regex=^https?://der-deckel-zum-topf.de/(.*)
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement=https://wwww.der-deckel-zum-topf.de/$${1}
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
-    networks:
 
   db_server:
     image: mariadb:10.5.9
@@ -52,7 +51,7 @@ services:
       MYSQL_PASSWORD: "${MYSQL_PASS}"
       MYSQL_DATABASE: "${MYSQL_DB}"
     healthcheck:
-      test: "mysqladmin ping -h 127.0.0.1 -u root --password=aljhgf13)17fgh1GKFASF"
+      test: "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} --password=${MYSQL_PASS}"
       interval: 5s
       retries: 5
     networks:
