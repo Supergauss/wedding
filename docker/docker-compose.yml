@@ -5,7 +5,7 @@ networks:
 
 services:
   webserver:
-    image: snooops/wedding:5ad77f1
+    image: snooops/wedding:00f6985
     container_name: '${APP_NAME}-server'
     ports:
       - '${APP_PORT}:80'
