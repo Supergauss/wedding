@@ -36,7 +36,6 @@ services:
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.regex=^https?://der-deckel-zum-topf.de/(.*)
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement=https://wwww.der-deckel-zum-topf.de/$${1}
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
-    networks:
 
   db_server:
     image: mariadb:10.5.9
