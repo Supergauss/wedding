@@ -52,7 +52,7 @@ services:
       MYSQL_PASSWORD: "${MYSQL_PASS}"
       MYSQL_DATABASE: "${MYSQL_DB}"
     healthcheck:
-      test: "mysqladmin ping -h 127.0.0.1 -u root --password=aljhgf13)17fgh1GKFASF"
+      test: "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} --password=${MYSQL_PASS}"
       interval: 5s
       retries: 5
     networks:
