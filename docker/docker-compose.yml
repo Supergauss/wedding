@@ -5,7 +5,7 @@ networks:
 
 services:
   webserver:
-    image: snooops/wedding:00f6985
+    image: snooops/wedding:32ab879
     container_name: '${APP_NAME}-server'
     ports:
       - '${APP_PORT}:80'
@@ -22,11 +22,11 @@ services:
       - "backup=true"
       - "traefik.enable=true"
       - "traefik.http.routers.wedding.entrypoints=http"
-      - "traefik.http.routers.wedding.rule=Host('der-deckel-zum-topf.de') || Host('www.der-deckel-zum-topf.de')"
+      - "traefik.http.routers.wedding.rule=Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)"
       - "traefik.http.middlewares.wedding-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.wedding.middlewares=wedding-https-redirect,redirect-to-non-www-der-deckel-zum-topf"
       - "traefik.http.routers.wedding-secure.entrypoints=https"
-      - "traefik.http.routers.wedding-secure.rule=Host('der-deckel-zum-topf.de') || Host('www.der-deckel-zum-topf.de')"
+      - "traefik.http.routers.wedding-secure.rule=Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)"
       - "traefik.http.routers.wedding-secure.tls=true"
       - "traefik.http.routers.wedding-secure.tls.certresolver=http"
       - "traefik.http.routers.wedding-secure.service=wedding"
