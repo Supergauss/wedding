@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24-04
 
     steps:
       - uses: actions/checkout@v3
@@ -25,13 +25,13 @@ jobs:
       - name: Extract Build Tag
         run: echo "shorttag=$(git rev-parse --short ${GITHUB_SHA})" >> $GITHUB_ENV
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     file: ./docker/webserver/Dockerfile
-      #     push: true
-      #     tags: snooops/wedding:${{ env.shorttag }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/webserver/Dockerfile
+          push: true
+          tags: snooops/wedding:${{ env.shorttag }}
 
       - name: Setup docker-compose.yml
         uses: rondefreitas/jinja2-action@v1.2.3
