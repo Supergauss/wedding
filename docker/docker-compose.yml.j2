@@ -12,7 +12,7 @@ services:
     working_dir: /var/www
     environment:
       - APP_ENV=prod
-      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@dbserver:3306/${MYSQL_DB}?serverVersion=mariadb-10.5.9
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@dbserver:3306/${MYSQL_DB}?serverVersion=10.11.10-MariaDB
     depends_on:
       dbserver:
         condition: service_healthy
@@ -39,7 +39,7 @@ services:
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
 
   dbserver:
-    image: mariadb:10.5.9
+    image: mariadb:10.11.10
     container_name: '${APP_NAME}-db'
     restart: always
     volumes:
