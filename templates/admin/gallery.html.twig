@@ -1,0 +1,39 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Bildergallery{% endblock %}
+{% block nav %}
+    {% include 'admin/_nav.html.twig' %}
+{% endblock %}
+{% block content %}
+    <main class="container-fluid mt-5">
+        <h1>Übersicht Bilder</h1>
+        {% include 'flash_messages.html.twig' %}
+        {% for invitation in existingInvitations %}
+            <div class="row" data-masonry='{"percentPosition": true }'>
+                {% for image in invitation.images %}
+                    <div class="col-2 mb-4">
+                        <div class="card">
+                            <img src="../data/uploaded_images/{{ image.filename }}">
+                            <div class="card-body">
+                                <p class="card-text">Hochgeladen von {{ invitation.name }}.
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input release-check" type="checkbox"
+                                           data-imageid="{{ image.id }}"
+                                           data-url="{{ path('admin_gallery_release', {'id': image.id }) }}"
+                                           role="switch"
+                                           id="flexSwitchCheckDefault{{ image.id }}"
+                                           {% if image.released %}checked{% endif %}>
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Freigegeben</label>
+                                </div>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </main>
+{% endblock %}

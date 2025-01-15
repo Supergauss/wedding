@@ -1,10 +1,12 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}Anmeldung Administrationsbereich{% endblock %}
-
-{% block body %}
+{% block title %}Übersicht Gäste{% endblock %}
+{% block nav %}
+ {% include 'admin/_nav.html.twig' %}
+{% endblock %}
+{% block content %}
     <main class="container-fluid mt-5">
-        <h1>Hochzeit Susanna & Dennis</h1>
+        <h1>Übersicht Gäste</h1>
         {% include 'flash_messages.html.twig' %}
 
         <a class="btn btn-lg btn-primary float-end mb-5" href="{{ path('admin_invitation_new') }}" role="button">Neuen

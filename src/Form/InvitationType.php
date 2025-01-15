@@ -22,6 +22,8 @@ class InvitationType extends AbstractType
                     'data' => 1,
                     'attr' => [
                         'placeholder' => 'number_guests_invited',
+                        'min' => 1,
+                        'max' => 6
                     ],
                     'row_attr' => [
                         'class' => 'form-floating',

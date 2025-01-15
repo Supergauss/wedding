@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Invitation;
 use App\Form\InvitationType;
+use App\Repository\ImageRepository;
 use App\Repository\InvitationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -61,7 +63,7 @@ class AdminController extends AbstractController
 
             $entityManager->persist($invitation);
             $entityManager->flush();
-            $this->addFlash('success', 'Die neue Einladung wurde angelegt');
+            $this->addFlash('success', $invitation->getName().' wurde angelegt');
             return $this->redirectToRoute('admin_index');
         }
         return $this->render('admin/invitation.html.twig', [
@@ -70,7 +72,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/invitation/delete/{id}', name: 'invitation_delete', methods: ['GET'])]
-    public function delete(Request $request, EntityManagerInterface $entityManager, ?string $id = null): Response
+    public function delete(Request $request, EntityManagerInterface $entityManager, string $id): Response
     {
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);
         $entityManager->remove($invitation);
@@ -83,5 +85,25 @@ class AdminController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route(path: '/gallery', name: 'gallery')]
+    public function gallery( InvitationRepository $invitationRepository): Response
+    {
+        $existingInvitations = $invitationRepository->findAll();
+        return $this->render('admin/gallery.html.twig',
+            [
+                'existingInvitations' => $existingInvitations
+            ]);
+    }
+
+    #[Route(path: '/gallery/release/{id}', name: 'gallery_release', methods: ['POST'])]
+    public function release(int $id, ImageRepository $imageRepository,EntityManagerInterface $entityManager,Request $request): JsonResponse
+    {
+        $image = $imageRepository->find($id);
+        $image->setReleased((bool)$request->get('released'));
+        $entityManager->persist($image);
+        $entityManager->flush();
+        return new JsonResponse(['success']);
     }
 }

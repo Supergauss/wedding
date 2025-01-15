@@ -1,0 +1,18 @@
+<nav id="navbar-example2" class="navbar navbar-expand navbar-dark fixed-top bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><h1 class="cover-heading">Susanna & Dennis</h1></a>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_index') }}">Liste der Gäste</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_gallery') }}">Bildergallery</a>
+            </li>
+            {% if app.user.username  %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ logout_path(key = null) }}">{{ app.user.username }} ausloggen</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
