@@ -1,0 +1,61 @@
+networks:
+  wedding_db:
+  proxy:
+    external: true
+
+services:
+  webserver:
+    image: snooops/wedding:b1b18a4
+    container_name: '${APP_NAME}-server'
+    ports:
+      - '${APP_PORT}:80'
+    working_dir: /var/www
+    environment:
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@db_server:3306/${MYSQL_DB}?serverVersion=mariadb-10.5.9
+    depends_on:
+      db_server:
+        condition: service_healthy
+    networks:
+      - wedding_db
+      - proxy
+    labels:
+      - "backup=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.wedding-db.entrypoints=http"
+      - "traefik.http.routers.wedding-db.rule=Host(`der-deckel-zum-topf.de`) || Host(`wwww.der-deckel-zum-topf.de`)"
+      - "traefik.http.middlewares.wedding-db-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.wedding-db.middlewares=wedding-db-https-redirect,redirect-to-non-www-der-deckel-zum-topf"
+      - "traefik.http.routers.wedding-db-secure.entrypoints=https"
+      - "traefik.http.routers.wedding-db-secure.rule=Host(`der-deckel-zum-topf.de`) || Host(`wwww.der-deckel-zum-topf.de`)"
+      - "traefik.http.routers.wedding-db-secure.tls=true"
+      - "traefik.http.routers.wedding-db-secure.tls.certresolver=http"
+      - "traefik.http.routers.wedding-db-secure.service=wedding-db"
+      - "traefik.http.services.wedding-db.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.wedding-db-secure.middlewares=secHeaders@file"
+      - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.regex=^https?://der-deckel-zum-topf.de/(.*)
+      - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement=https://wwww.der-deckel-zum-topf.de/$${1}
+      - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
+
+  db_server:
+    image: mariadb:10.5.9
+    container_name: '${APP_NAME}-db'
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - '${DB_PORT}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: aljhgf13)17fgh1GKFASF
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASS}"
+      MYSQL_DATABASE: "${MYSQL_DB}"
+    healthcheck:
+      test: "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} --password=${MYSQL_PASS}"
+      interval: 5s
+      retries: 5
+    networks:
+      - wedding_db
+
+volumes:
+  db_data:
