@@ -5,12 +5,13 @@ networks:
 
 services:
   webserver:
-    image: snooops/wedding:d912301
+    image: snooops/wedding:59c5f79
     container_name: '${APP_NAME}-server'
     ports:
       - '${APP_PORT}:80'
     working_dir: /var/www
     environment:
+      - APP_ENV=prod
       - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@db_server:3306/${MYSQL_DB}?serverVersion=mariadb-10.5.9
     depends_on:
       db_server:
