@@ -20,7 +20,7 @@ COPY docker/webserver/php/php.ini /usr/local/etc/php/conf.d/extra-php-config.ini
 # setup workdirectory
 WORKDIR /var/www
 
-# install php extionsions
+# install php extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions gd pdo_mysql bcmath zip intl opcache
 
