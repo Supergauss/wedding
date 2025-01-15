@@ -5,16 +5,16 @@ networks:
 
 services:
   webserver:
-    image: snooops/wedding:d12bb49
+    image: snooops/wedding:e653cb0
     container_name: '${APP_NAME}-server'
     ports:
       - '${APP_PORT}:80'
     working_dir: /var/www
     environment:
       - APP_ENV=prod
-      - DATABASE_URL=mysql://piepspubs:yolo@db_server:3306/tolledb?serverVersion=mariadb-10.5.9
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@dbserver:3306/${MYSQL_DB}?serverVersion=mariadb-10.5.9
     depends_on:
-      db_server:
+      dbserver:
         condition: service_healthy
     networks:
       - wedding_db
@@ -38,7 +38,7 @@ services:
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement=https://www.der-deckel-zum-topf.de/$${1}
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
 
-  db_server:
+  dbserver:
     image: mariadb:10.5.9
     container_name: '${APP_NAME}-db'
     restart: always
