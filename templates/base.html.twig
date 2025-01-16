@@ -14,12 +14,14 @@
     </head>
     <body>
     {% block body %}
-        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-            <main role="main" class="inner cover">
-                {% block coverheading %}{% endblock %}
-                {% block covercontent %}{% endblock %}
-            </main>
-        </div>
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+
+    {% block nav %}{% endblock %}
+        <main role="main" class="inner cover">
+            {% block coverheading %}{% endblock %}
+            {% block covercontent %}{% endblock %}
+        </main>
     {% endblock %}
+    </div>
     </body>
 </html>

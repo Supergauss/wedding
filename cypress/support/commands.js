@@ -30,4 +30,4 @@ Cypress.Commands.add('login', () => {
     cy.get('#floatingPassword').type('WeddingFirlefatz13!')
     cy.get('.btn.btn-primary').click()
     cy.contains('h1','Hochzeit Susanna & Dennis')
-})
+});

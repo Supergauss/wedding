@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Invitation;
+use App\Form\ImageType;
 use App\Form\PromiseType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,9 +23,10 @@ class PromiseController extends AbstractController
     }
 
     #[Route('/promise/{id}', name: 'promise', methods: ['GET', 'POST'])]
-    public function familyPromise(string $id, EntityManagerInterface $entityManager, Request $request): Response
+    public function familyPromise(string $id, EntityManagerInterface $entityManager, Request $request, FileUploader $fileUploader): Response
     {
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);
+        $images = $entityManager->getRepository(Image::class)->findBy(['released' => true]);
         if ($invitation instanceof Invitation) {
             if ($invitation->getDatePromised()) {
                 $successMessage = 'Du hast bereits zugesagt, danke!';
@@ -30,7 +35,8 @@ class PromiseController extends AbstractController
                 }
                 $this->addFlash('success', $successMessage);
                 return $this->render('promise/index.html.twig', [
-                    'invitation' => $invitation
+                    'invitation' => $invitation,
+                    'images' => $images
                 ]);
             }
             if ($invitation->getDateMustPromise()->format('U') > time()) {
@@ -44,14 +50,37 @@ class PromiseController extends AbstractController
                     $entityManager->persist($invitation);
                     $entityManager->flush();
                     $this->addFlash('success', 'Vielen Dank für die Zusage');
-                    return $this->redirectToRoute('app_index');
+                    return $this->redirectToRoute('promise', ['id' => $id]);
+                }
+
+                $formGallery = $this->createForm(ImageType::class);
+                $formGallery->handleRequest($request);
+                if ($formGallery->isSubmitted() && $formGallery->isValid()) {
+                    /** @var UploadedFile $image */
+                    foreach($formGallery->get('images')->getData() as $key => $image){
+                        if ($image) {
+                            $imageFilename = $fileUploader->upload($image);
+                            $imageEntity = new Image();
+                            $imageEntity->setFilename($imageFilename);
+                            $invitation->addImage($imageEntity);
+                            $entityManager->persist($imageEntity);
+                            $entityManager->flush();
+                        }
+                    }
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Die Bilder wurden erfolgreich hinzugefügt und müssen nun freigegeben werden.');
+                    return $this->redirectToRoute('promise', ['id' => $id]);
                 }
                 return $this->render('promise/index.html.twig', [
-                    'invitation' => $invitation, 'form' => $form->createView()
+                    'invitation' => $invitation,
+                    'form' => $form->createView(),
+                    'formGallery' => $formGallery->createView(),
+                    'images' => $images
                 ]);
             } else {
                 $this->addFlash('danger', 'Der Zusagezeitraum ist abgelaufen');
-                return $this->redirect($this->generateUrl('app_index'));
+                return $this->redirectToRoute('promise', ['id' => $id]);
             }
         } else {
 

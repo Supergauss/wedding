@@ -1,9 +1,4 @@
-import './bootstrap.js';
-
-const $ = require('jquery');
-// this "modifies" the jquery module: adding behavior to it
-// the bootstrap module doesn't export/return anything
-require('bootstrap')
+import './main';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -11,5 +6,22 @@ require('bootstrap')
  * which should already be in your base.html.twig.
  */
 import './styles/admin.scss';
-import "@fortawesome/fontawesome-free/js/all.js";
-import "@fortawesome/fontawesome-free/css/all.css";
+
+$(".release-check").each(function (index) {
+    $(this).on("click", function () {
+        let data = {released: 0};
+        if ($(this).prop("checked")) {
+            data = {released: 1};
+        }
+        let url = $(this).data('url');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            dataType: 'json',
+            success: function (data, textStatus) {
+                console.log("Success");
+            }
+        });
+    });
+});

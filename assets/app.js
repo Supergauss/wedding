@@ -1,9 +1,3 @@
-import './bootstrap.js';
-
-const $ = require('jquery');
-// this "modifies" the jquery module: adding behavior to it
-// the bootstrap module doesn't export/return anything
-require('bootstrap')
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -11,7 +5,16 @@ require('bootstrap')
  * which should already be in your base.html.twig.
  */
 import './styles/app.scss';
+import './main';
 
+var jQueryBridget = require('jquery-bridget');
+var Isotope = require('isotope-layout');
+jQueryBridget( 'isotope', Isotope, $ );
 
-import "@fortawesome/fontawesome-free/js/all.js";
-import "@fortawesome/fontawesome-free/css/all.css";
+$('.grid').isotope({
+    // options
+    itemSelector: '.grid-item',
+    masonry: {
+        columnWidth: 200
+    }
+});

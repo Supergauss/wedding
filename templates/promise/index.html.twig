@@ -1,48 +1,97 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Einladung{% endblock %}
+{% block nav %}
+    <nav id="navbar-example2" class="navbar navbar-expand navbar-dark fixed-top bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><h1 class="cover-heading">Susanna & Dennis</h1></a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#scrollspyHeading1">Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#scrollspyHeading2">Zusage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#scrollspyHeading3">Bilder hochladen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#scrollspyHeading4">Gallery</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
 
- {% block coverheading %}
-     <h1 class="cover-heading">Susanna & Dennis</h1>
-     <h2 class="cover-heading">Wir trauen uns!</h2>
- {% endblock %}
+
 {% block covercontent %}
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example"
+         tabindex="0">
+
     <p class="lead mt-5">
-        {{ invitation.salutation.value }}  {{ invitation.name }},<br><br>
+        {{ salutation(invitation) }}  {{ invitation.name }},<br><br>
 
         wir möchten {{ akkusativ(invitation) }} gerne zu unserer Hochzeit einladen. </p>
-    <hr>
-    <h3><i class="fa-solid fa-calendar-days"></i> Wann</h3>
+
+    <h2 class="cover-heading mt-5" id="scrollspyHeading1">Wir trauen uns!</h2>
+    <div class="text-center">
+    <h3 class="h3-line">Wann</h3>
     <p class="lead">28.05.2025 | 16 Uhr</p>
-    <hr>
-    <h3><i class="fa-solid fa-location-dot"></i> Wo</h3>
-    <p class="lead">Trauzimmer Ilsfeld<br><br>
-        <a href="https://maps.app.goo.gl/bQnSK9Wvxk51FV4m9" target="_blank">Anfahrt</a>
+
+    <h3 class="h3-line">Wo</h3>
+    <p class="lead">Trauzimmer Ilsfeld | <a href="https://maps.app.goo.gl/bQnSK9Wvxk51FV4m9" target="_blank">Anfahrt</a>
     </p>
-    <hr>
-    <h3><i class="fa-solid fa-timeline"></i> Ablauf</h3>
+
+    <h3 class="h3-line">Ablauf</h3>
     <p class="lead">Wir starten um 16 Uhr mit der standesamtlichen Trauung, die ca. 1h dauert und freuen uns, danach
         mit {{ dativ(invitation) }} auf dem Platz davor mit Sekt, Bier und Co. anzustossen.</p>
-    <hr>
-    {% if invitation.isfamily %}
-    <h3><i class="fa-solid fa-utensils"></i> Restaurant</h3>
-    <p class="lead">Im <a href="https://www.landhaus-hohly.de/home.html" target="_blank">Landhaus Holy</a> wollen wir
-        mit Euch lecker essen und den Abend mit Euch ausklingen lassen.<br><br>
 
-        <a href="https://maps.app.goo.gl/dbJNegoksLFi8w5U7" target="_blank">Anfahrt</a></p>
-    <hr>
-{% endif %}
-    <h3><i class="fa-regular fa-calendar-check"></i> Zusage</h3>
-    <p class="lead">
-    {% include 'flash_messages.html.twig' %}
-    {% if form is defined %}
-        {{ form_start(form) }}
-        {% if form.number_guests_promised is defined %}
-            {{ form_row(form.number_guests_promised) }}
+    {% if invitation.isfamily %}
+        <h3 class="h3-line">Restaurant</h3>
+        <p class="lead">
+            Landhaus Holy | <a href="https://maps.app.goo.gl/dbJNegoksLFi8w5U7" target="_blank">Anfahrt</a><br><br>
+            Im <a href="https://www.landhaus-hohly.de/home.html" target="_blank">Landhaus Holy</a> wollen wir
+            mit Euch lecker essen und den Abend mit Euch ausklingen lassen.
+        </p>
+
+        </div>
+
+        <h2 id="scrollspyHeading2" class="mt-5">Zusage</h2>
+        <p class="lead">
+        {% include 'flash_messages.html.twig' %}
+        {% if form is defined %}
+            {{ form_start(form) }}
+            {% if form.number_guests_promised is defined %}
+                {{ form_row(form.number_guests_promised) }}
+            {% endif %}
+            {{ form_row(form.promised) }}
+            {{ form_row(form.guest_comment) }}
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary mt-5">Speichern</button>
+            </div>
+            {{ form_end(form) }}
         {% endif %}
-        {{ form_row(form.promised) }}
-        {{ form_row(form.guest_comment) }}
-        <button type="submit" class="btn btn-primary mt-5 float-end">Speichern</button>
-        {{ form_end(form) }}</p>
+        </p>
+
+        <h2 id="scrollspyHeading3" class="mt-5">Bilder der Feier hochladen</h2>
+        {% if formGallery is defined %}
+            {{ form_start(formGallery) }}
+            {{ form_row(formGallery.images) }}
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary mt-5">Speichern</button>
+            </div>
+            {{ form_end(formGallery) }}
+        {% endif %}
+
+        <h2 id="scrollspyHeading4" class="mt-5">Gallery</h2>
+        <div class="grid gallery">
+            {% for image in images %}
+                <div class="grid-item">
+                        <img src="../data/uploaded_images/{{ image.filename }}">
+                </div>
+
+            {% endfor %}
+        </div>
     {% endif %}
+
 {% endblock %}

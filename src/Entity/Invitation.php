@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\InvitationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -50,10 +52,17 @@ class Invitation
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $promised_date = null;
 
+    /**
+     * @var Collection<int, Image>
+     */
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'invitation')]
+    private Collection $images;
+
     public function __construct()
     {
         $this->is_family = false;
         $this->date_must_promise = new \DateTime('2025-04-30');
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -189,6 +198,36 @@ class Invitation
     public function setPromisedDate(?\DateTimeInterface $promised_date): static
     {
         $this->promised_date = $promised_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setInvitation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getInvitation() === $this) {
+                $image->setInvitation(null);
+            }
+        }
 
         return $this;
     }
