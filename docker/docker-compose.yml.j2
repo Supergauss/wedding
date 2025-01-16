@@ -27,7 +27,7 @@ services:
       - "traefik.http.routers.wedding.entrypoints=http"
       - "traefik.http.routers.wedding.rule=Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)"
       - "traefik.http.middlewares.wedding-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.wedding.middlewares=wedding-https-redirect,redirect-to-non-www-der-deckel-zum-topf"
+      - "traefik.http.routers.wedding.middlewares=wedding-https-redirect,redirect-to-non-www-der-deckel-zum-topf,secure-headers"
       - "traefik.http.routers.wedding-secure.entrypoints=https"
       - "traefik.http.routers.wedding-secure.rule=Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)"
       - "traefik.http.routers.wedding-secure.tls=true"
@@ -40,6 +40,7 @@ services:
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement=https://www.der-deckel-zum-topf.de/$${1}
       - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
       - traefik.http.middlewares.secure-headers.headers.customRequestHeaders.X-Forwarded-Proto="https"
+
 
   dbserver:
     image: mariadb:10.11.10
