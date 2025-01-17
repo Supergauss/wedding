@@ -5,7 +5,7 @@ networks:
 
 services:
   webserver:
-    image: snooops/wedding:9a69735
+    image: snooops/wedding:86c6741
     container_name: '${APP_NAME}-server'
     ports:
       - '${APP_PORT}:80'
@@ -22,24 +22,24 @@ services:
       - wedding_db
       - proxy
     labels:
-      - "backup=true"
-      - "traefik.enable=true"
-      - "traefik.http.routers.wedding.entrypoints=http"
-      - "traefik.http.routers.wedding.rule=Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)"
-      - "traefik.http.middlewares.wedding-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.wedding.middlewares=wedding-https-redirect,redirect-to-non-www-der-deckel-zum-topf"
-      - "traefik.http.routers.wedding-secure.entrypoints=https"
-      - "traefik.http.routers.wedding-secure.rule=Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)"
-      - "traefik.http.routers.wedding-secure.tls=true"
-      - "traefik.http.routers.wedding-secure.tls.certresolver=http"
-      - "traefik.http.routers.wedding-secure.service=wedding"
-      - "traefik.http.services.wedding.loadbalancer.server.port=80"
-      - "traefik.docker.network=proxy"
-      - "traefik.http.routers.wedding-secure.middlewares=secHeaders@file,secure-headers"
-      - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.regex=^https?://der-deckel-zum-topf.de/(.*)
-      - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement=https://www.der-deckel-zum-topf.de/$${1}
-      - traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent=true
-      - traefik.http.middlewares.secure-headers.headers.customRequestHeaders.X-Forwarded-Proto="https"
+      backup: true
+      traefik.enable: true
+      traefik.http.routers.wedding.entrypoints: http
+      traefik.http.routers.wedding.rule: Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)
+      traefik.http.middlewares.wedding-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.wedding.middlewares: wedding-https-redirect
+      traefik.http.routers.wedding-secure.entrypoints: https
+      traefik.http.routers.wedding-secure.rule: Host(`der-deckel-zum-topf.de`) || Host(`www.der-deckel-zum-topf.de`)
+      traefik.http.routers.wedding-secure.tls: true
+      traefik.http.routers.wedding-secure.tls.certresolver: http
+      traefik.http.routers.wedding-secure.service: wedding
+      traefik.http.services.wedding.loadbalancer.server.port: 80
+      traefik.docker.network: proxy
+      traefik.http.routers.wedding-secure.middlewares: secHeaders@file,secure-headers
+      # traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.regex: ^https?://der-deckel-zum-topf.de/(.*)
+      # traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.replacement: https://www.der-deckel-zum-topf.de/$${1}
+      # traefik.http.middlewares.redirect-to-non-www-der-deckel-zum-topf.redirectregex.permanent: true
+      # traefik.http.middlewares.secure-headers.headers.customRequestHeaders.X-Forwarded-Proto: https
 
 
   dbserver:
