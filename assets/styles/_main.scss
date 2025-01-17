@@ -38,6 +38,9 @@ h1,h2,h3 {
   font-style: normal;
 }
 
+.grid {
+  width: 100%;
+}
 /* clearfix */
 .grid:after {
   content: '';

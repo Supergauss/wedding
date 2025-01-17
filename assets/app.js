@@ -10,12 +10,9 @@ var Masonry = require('masonry-layout');
 
 
 $(function() {
-    console.log( "ready!" );
     var msnry = new Masonry( '.grid', {
         itemSelector: '.grid-item',
         columnWidth: '.grid-sizer',
         percentPosition: true
     });
-
-    console.log(msnry);
 });

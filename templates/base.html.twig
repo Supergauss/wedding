@@ -16,7 +16,7 @@
 <body>
 {% block body %}
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        {% if invitation %}
+        {% if invitation is defined %}
             <nav id="navbar-example2" class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary navbar-collapse">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">
@@ -49,7 +49,6 @@
             </nav>
         {% endif %}
         <main role="main" class="inner cover">
-            {% block coverheading %}{% endblock %}
             {% block covercontent %}{% endblock %}
         </main>
     </div>
