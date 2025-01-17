@@ -12,6 +12,7 @@ services:
     working_dir: /var/www
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - images:/var/www/public/data/uploaded_images:rw
     environment:
       - APP_ENV=prod
       - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@dbserver:3306/${MYSQL_DB}?serverVersion=10.11.10-MariaDB
@@ -69,3 +70,4 @@ services:
 
 volumes:
   db_data:
+  images:
