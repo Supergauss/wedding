@@ -3,8 +3,12 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
-
+    session:
+        cookie_secure: auto # oder true, falls HTTPS verwendet wird
+        cookie_samesite: lax # oder none bei Cross-Origin-Setups
+    
+    trusted_proxies: ['127.0.0.1', '::1', 'REMOTE_ADDR']
+    trusted_headers: [ 'x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto' ]
     #esi: true
     #fragments: true
 

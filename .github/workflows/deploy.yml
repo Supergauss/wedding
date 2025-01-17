@@ -47,3 +47,6 @@ jobs:
           commit_message: Automated Change
           commit_user_name: GitHub Actions Bot
           commit_user_email: snooops@dns-serve.de
+
+      - name: Trigger Portainer deployment
+        run: curl -X POST -s ${{ secrets.PORTAINER_WEBHOOK }}
