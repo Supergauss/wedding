@@ -75,8 +75,7 @@ class PromiseController extends AbstractController
                 return $this->render('promise/index.html.twig', [
                     'invitation' => $invitation,
                     'form' => $form->createView(),
-                    'formGallery' => $formGallery->createView(),
-                    'images' => $images
+                    'formGallery' => $formGallery->createView()
                 ]);
             } else {
                 $this->addFlash('danger', 'Der Zusagezeitraum ist abgelaufen');
@@ -87,5 +86,16 @@ class PromiseController extends AbstractController
             $this->addFlash('danger', 'Anscheinend wurden Sie aber nicht eingeladen, schade schade');
             return $this->redirect($this->generateUrl('app_index'));
         }
+    }
+
+    #[Route('/gallery/{id}', name: 'gallery', methods: ['GET', 'POST'])]
+    public function gallery(string $id, EntityManagerInterface $entityManager, Request $request, FileUploader $fileUploader): Response
+    {
+        $invitation = $entityManager->getRepository(Invitation::class)->find($id);
+        $images = $entityManager->getRepository(Image::class)->findBy(['released' => true]);
+        return $this->render('promise/gallery.html.twig', [
+            'invitation' => $invitation,
+            'images' => $images
+        ]);
     }
 }

@@ -6,4 +6,6 @@ const $ = require('jquery');
 require('bootstrap');
 
 import "@fortawesome/fontawesome-free/js/all.js";
-import "@fortawesome/fontawesome-free/css/all.css";
+
+
+import 'lightbox2/dist/js/lightbox.min';

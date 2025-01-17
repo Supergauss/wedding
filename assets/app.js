@@ -6,15 +6,13 @@
  */
 import './styles/app.scss';
 import './main';
+var Masonry = require('masonry-layout');
 
-var jQueryBridget = require('jquery-bridget');
-var Isotope = require('isotope-layout');
-jQueryBridget( 'isotope', Isotope, $ );
 
-$('.grid').isotope({
-    // options
-    itemSelector: '.grid-item',
-    masonry: {
-        columnWidth: 200
-    }
+$(function() {
+    var msnry = new Masonry( '.grid', {
+        itemSelector: '.grid-item',
+        columnWidth: '.grid-sizer',
+        percentPosition: true
+    });
 });
