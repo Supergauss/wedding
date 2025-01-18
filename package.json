@@ -8,6 +8,7 @@
         "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
         "@symfony/webpack-encore": "^5.0.0",
         "core-js": "^3.38.0",
+        "file-loader": "6.0.0",
         "regenerator-runtime": "^0.13.9",
         "webpack": "^5.74.0",
         "webpack-cli": "^5.1.0",
@@ -31,6 +32,7 @@
         "lightbox2": "^2.11.5",
         "masonry-layout": "^4.2.2",
         "sass": "1.77.6",
-        "sass-loader": "^16.0.4"
+        "sass-loader": "^16.0.4",
+        "swiper": "^11.2.1"
     }
 }

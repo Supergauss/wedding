@@ -25,6 +25,6 @@ class PromiseLinkExtension extends AbstractExtension
         $url = $this->router->generate('promise',['id' => $invitation->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
          //return '<a href="#" onclick="navigator.clipboard.writeText(\''.$url.'\')">Link kopieren für '.$invitation->getName().'</a>';
-        return '<a href="'.$url.'">Link kopieren für '.$invitation->getName().'</a>';
+        return '<a href="'.$url.'" target="_blank">Link kopieren für '.$invitation->getName().'</a>';
     }
 }

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Wir trauen uns{% endblock %}</title>
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -15,43 +13,47 @@
 </head>
 <body>
 {% block body %}
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        {% if invitation is defined %}
-            <nav id="navbar-example2" class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary navbar-collapse">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
-                        <h1 class="cover-heading">Susanna & Dennis</h1>
-                    </a>
+            {% if invitation is defined %}
+                <header>
+                    <nav id="navbar-example2" class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary navbar-collapse">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">
+                                <h1 class="cover-heading">Susanna & Dennis</h1>
+                            </a>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('promise', {id: invitation.id}) }}#scrollspyHeading1">Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('promise', {id: invitation.id}) }}#scrollspyHeading2">Zusage</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('promise', {id: invitation.id}) }}#scrollspyHeading3">Bilder
-                                    hochladen</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('gallery', {id: invitation.id}) }}">Gallery</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        {% endif %}
-        <main role="main" class="inner cover">
-            {% block covercontent %}{% endblock %}
-        </main>
-    </div>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent"
+                                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('promise', {id: invitation.id}) }}#scrollspyHeading1">Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('promise', {id: invitation.id}) }}#scrollspyHeading2">Zusage</a>
+                                    </li>
+                                    {% if date("2025-05-28 00:00:01.000000")|date('m/d/Y')  <= 'now'|date('m/d/Y') %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('promise', {id: invitation.id}) }}#scrollspyHeading3">Bilder
+                                            hochladen</a>
+                                    </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('gallery', {id: invitation.id}) }}">Gallery</a>
+                                        </li>
+                                    {% endif %}
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            {% endif %}
+            <main role="main" >
+                {% block covercontent %}{% endblock %}
+            </main>
+
 {% endblock %}
 </body>
 </html>

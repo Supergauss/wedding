@@ -4,72 +4,235 @@
 
 
 {% block covercontent %}
-<div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-
-    <p class="lead mt-5">
-        {{ salutation(invitation) }}  {{ invitation.name }},<br><br>
-
-        wir möchten {{ akkusativ(invitation) }} gerne zu unserer Hochzeit einladen. </p>
-
-    <h2 class="cover-heading mt-5" id="scrollspyHeading1">Wir trauen uns!</h2>
-    <div class="text-center">
-        <h3 class="h3-line">Wann</h3>
-        <p class="lead">28.05.2025 | 16 Uhr</p>
-
-        <h3 class="h3-line">Wo</h3>
-        <p class="lead">Trauzimmer Ilsfeld | <a href="https://maps.app.goo.gl/bQnSK9Wvxk51FV4m9"
-                                                target="_blank">Anfahrt</a>
-        </p>
-
-        <h3 class="h3-line">Ablauf</h3>
-        <p class="lead">Wir starten um 16 Uhr mit der standesamtlichen Trauung, die ca. 1h dauert und freuen uns, danach
-            mit {{ dativ(invitation) }} auf dem Platz davor mit Sekt, Bier und Co. anzustossen.</p>
-
-        {% if invitation.isfamily %}
-        <h3 class="h3-line">Restaurant</h3>
-        <p class="lead">
-            Landhaus Holy | <a href="https://maps.app.goo.gl/dbJNegoksLFi8w5U7" target="_blank">Anfahrt</a><br><br>
-            Im <a href="https://www.landhaus-hohly.de/home.html" target="_blank">Landhaus Holy</a> wollen wir
-            mit Euch lecker essen und den Abend mit Euch ausklingen lassen.
-        </p>
-
-    </div>
-
-    <h2 id="scrollspyHeading2" class="mt-5">Zusage</h2>
-    <p class="lead">
-        {% include 'flash_messages.html.twig' %}
-        {% if form is defined %}
-            {{ form_start(form) }}
-                {% if form.number_guests_promised is defined %}
-                    {{ form_row(form.number_guests_promised) }}
-                {% endif %}
-                {{ form_row(form.promised) }}
-                {{ form_row(form.guest_comment) }}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="float-end">
-                            <button type="submit" class="btn btn-primary mt-5">Speichern</button>
+    <section class="topfunddeckel-slider topfunddeckel-style">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20220530.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2025<br>Wir trauen uns!</h2>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
 
-            {{ form_end(form) }}
-        {% endif %}
-    </p>
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20250108.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2025<br>Unsere Eheringe</h2>
+                            </div>
+                            <div data-swiper-parallax="400" class="slide-text">
+                                <p>von Fingerglück</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
 
-    <h2 id="scrollspyHeading3" class="mt-5">Bilder der Feier hochladen</h2>
-    {% if formGallery is defined %}
-        {{ form_start(formGallery) }}
-        {{ form_row(formGallery.images) }}
-        <div class="row">
-            <div class="col-12">
-                <div class="float-end">
-                    <button type="submit" class="btn btn-primary mt-5">Speichern</button>
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20220816.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2022<br>Unser Haus</h2>
+                            </div>
+                            <div data-swiper-parallax="400" class="slide-text">
+                                <p>Endlich haben wir die Schlüssel</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20210812.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2021<br>Verlobung in Portugal</h2>
+                            </div>
+                            <div data-swiper-parallax="400" class="slide-text">
+                                <p>die Zweite :)</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20210807.jpeg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2021<br>Urlaub in Portugal</h2>
+                            </div>
+                            <div data-swiper-parallax="400" class="slide-text">
+                                <p>Danke Annika für das schöne Bild</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20210802.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2021<br>Jetzt wird gefeiert</h2>
+                            </div>
+                            <div data-swiper-parallax="400" class="slide-text">
+                                <p>Wir haben das Haus und können endlich zur Ruhe kommen!</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20190913.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2019<br>Holland</h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20190907.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2019<br>Holland</h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20180913.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2018<br>Holland</h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20150204.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2015<br>Miezbärs</h2>
+                            </div>
+                            <div data-swiper-parallax="400" class="slide-text">
+                                <p>Wir ziehen zusammen und die Miezbärs ziehen ein</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-inner slide-bg-image"
+                         data-background="{{ asset('build/images/slider/20140509.jpg') }}">
+                        <div class="container">
+                            <div data-swiper-parallax="300" class="slide-title">
+                                <h2>2014<br>Wie alles begann</h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="swiper-pagination"></div>
         </div>
-        {{ form_end(formGallery) }}
-    {% endif %}
-{% endif %}
-</div>
+    </section>
+    <div class="container invitation">
+        <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example"
+             tabindex="0">
+
+            <p class="lead mt-5">
+                {{ salutation(invitation) }}  {{ invitation.name }},<br><br>
+
+                wir möchten {{ akkusativ(invitation) }} gerne zu unserer Hochzeit einladen. </p>
+
+            <h2 class="cover-heading mt-5" id="scrollspyHeading1">Wir trauen uns!</h2>
+            <div class="text-center">
+                <h3 class="h3-line">Wann</h3>
+                <p class="lead">28.05.2025 | 16 Uhr</p>
+
+                <h3 class="h3-line">Wo</h3>
+                <p class="lead">Trauzimmer Ilsfeld | <a href="https://maps.app.goo.gl/bQnSK9Wvxk51FV4m9"
+                                                        target="_blank">Anfahrt</a>
+                </p>
+
+                <h3 class="h3-line">Ablauf</h3>
+                <p class="lead">Wir starten um 16 Uhr mit der standesamtlichen Trauung, die ca. 1h dauert und freuen
+                    uns, danach
+                    mit {{ dativ(invitation) }} auf dem Platz davor mit Sekt, Bier und Co. anzustossen.</p>
+
+                {% if invitation.isfamily %}
+                    <h3 class="h3-line">Restaurant</h3>
+                    <p class="lead">
+                        Landhaus Holy | <a href="https://maps.app.goo.gl/dbJNegoksLFi8w5U7"
+                                           target="_blank">Anfahrt</a><br><br>
+                        Im <a href="https://www.landhaus-hohly.de/home.html" target="_blank">Landhaus Holy</a> wollen wir
+                        mit Euch lecker essen und den Abend mit Euch ausklingen lassen.
+                    </p>
+                {% endif %}
+            </div>
+
+            <h2 id="scrollspyHeading2" class="mt-5">Zusage</h2>
+            <p class="lead">
+                {% include 'flash_messages.html.twig' %}
+                {% if form is defined %}
+                    {{ form_start(form) }}
+                    {% if form.number_guests_promised is defined %}
+                        {{ form_row(form.number_guests_promised) }}
+                    {% endif %}
+                    {{ form_row(form.promised) }}
+                    {{ form_row(form.guest_comment) }}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="float-end">
+                                <button type="submit" class="btn btn-primary mt-5"><i class="fa-regular fa-heart"></i> Speichern
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                {% endif %}
+            </p>
+
+            {% if date("2025-05-28 00:00:01.000000")|date('m/d/Y')  <= 'now'|date('m/d/Y') %}
+                <h2 id="scrollspyHeading3" class="mt-5">Bilder der Feier hochladen</h2>
+                {% if formGallery is defined %}
+                    {{ form_start(formGallery) }}
+                    {{ form_row(formGallery.images) }}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="float-end">
+                                <button type="submit" class="btn btn-primary mt-5">Speichern</button>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(formGallery) }}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

@@ -9,6 +9,7 @@ use App\Form\PromiseType;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class PromiseController extends AbstractController
     public function familyPromise(string $id, EntityManagerInterface $entityManager, Request $request, FileUploader $fileUploader): Response
     {
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);
-        $images = $entityManager->getRepository(Image::class)->findBy(['released' => true]);
+
         if ($invitation instanceof Invitation) {
             if ($invitation->getDatePromised()) {
                 $successMessage = 'Du hast bereits zugesagt, danke!';
@@ -35,8 +36,7 @@ class PromiseController extends AbstractController
                 }
                 $this->addFlash('success', $successMessage);
                 return $this->render('promise/index.html.twig', [
-                    'invitation' => $invitation,
-                    'images' => $images
+                    'invitation' => $invitation
                 ]);
             }
             if ($invitation->getDateMustPromise()->format('U') > time()) {
