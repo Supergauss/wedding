@@ -34,15 +34,21 @@ class PromiseLinkExtension extends AbstractExtension
         $html = $this->extension->salutation($invitation). ' '.$invitation->getName().",<br><br>";
         if(in_array($invitation->getSalutation()->name, ['MULTI'])){
             $html .= "Wir laden euch hiermit herzlich 
-zu unserer Hochzeit am 28.05.2025 
-ein. Details findet ihr im Link.<br>
-Liebe Grüße,<br>
-Susanna & Dennis<br><br>";
+zu unserer Hochzeit am 28.05.2025 ein.<br>
+Details findet ihr im Link zu 
+unserer Hochzeitswebsite.<br>
+Bitte gebt uns Rückmeldung bis 
+zum 28.02. ob Ihr dabei seid.<br><br>
+Mit Vorfreude und ganz lieben Grüßen,<br>
+Susanna & Dennis";
         } else {
             $html .= "Wir laden dich hiermit herzlich 
-zu unserer Hochzeit am 28.05.2025 
-ein. Details findet ihr im Link.<br>
-Liebe Grüße,<br>
+zu unserer Hochzeit am 28.05.2025 ein.<br>
+Details findest du im Link zu 
+unserer Hochzeitswebsite.<br>
+Bitte gib uns Rückmeldung bis 
+zum 28.02. ob du dabei bist.<br><br>
+Mit Vorfreude und ganz lieben Grüßen,<br>
 Susanna & Dennis";
         }
 
