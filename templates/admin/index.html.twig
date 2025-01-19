@@ -45,6 +45,9 @@
                     Kommentar Gast
                 </th>
                 <th>
+                    Text zur Einladung
+                </th>
+                <th>
                     Link zu Einladung
                 </th>
                 <th>
@@ -87,6 +90,7 @@
                         {% endif %}
                     </td>
                     <td>{{ invitation.guestcomment }}</td>
+                    <td>{{ promiseHtml(invitation)| raw }}</td>
                     <td>{{ promiseLink(invitation)| raw }}</td>
                     <td class="text-nowrap">
                         <a href="{{ path('admin_invitation_delete', {id: invitation.id}) }}" class="btn border border-secondary"><i class="fa-solid fa-box-archive"></i></a>

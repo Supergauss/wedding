@@ -19,7 +19,8 @@ class GrammatikExtension extends AbstractExtension
         return [
             new TwigFunction('dativ', [$this, 'dativ']),
             new TwigFunction('akkusativ', [$this, 'akkusativ']),
-            new TwigFunction('pronomen', [$this, 'pronomen']),
+            new TwigFunction('possessivpronomen', [$this, 'possessivpronomen']),
+            new TwigFunction('salutation', [$this, 'salutation']),
         ];
     }
 
@@ -39,11 +40,27 @@ class GrammatikExtension extends AbstractExtension
         return 'dich';
     }
 
-    public function pronomen(Invitation $invitation): string
+    public function possessivpronomen(Invitation $invitation): string
     {
         if($invitation->getNumberGuestsInvited() > 1){
             return 'eure';
         }
         return 'deine';
+    }
+
+    public function pronomen(Invitation $invitation): string
+    {
+        if($invitation->getNumberGuestsInvited() > 1){
+            return 'ihr';
+        }
+        return 'du';
+    }
+
+    public function salutation(Invitation $invitation): string
+    {
+        if(in_array($invitation->getSalutation()->name, ['MULTI','SINGLE_FEMALE'])){
+            return 'Liebe';
+        }
+        return 'Lieber';
     }
 }
