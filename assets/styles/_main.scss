@@ -1,7 +1,12 @@
 $peach: #26392f;
-$theme-colors: (
-        primary: $peach
-);
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+// merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, (
+        "primary": $peach
+));
 
 @import "~lightbox2/dist/css/lightbox.css";
 @import "~bootstrap/scss/bootstrap";

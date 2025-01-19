@@ -29,35 +29,28 @@ class PromiseController extends AbstractController
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);
 
         if ($invitation instanceof Invitation) {
-            if ($invitation->getDatePromised()) {
-                $successMessage = 'Du hast bereits zugesagt, danke!';
-                if ($invitation->getNumberGuestsInvited() > 1) {
-                    $successMessage = 'Ihr habt bereits zugesagt, danke!';
-                }
-                $this->addFlash('success', $successMessage);
-                return $this->render('promise/index.html.twig', [
-                    'invitation' => $invitation
-                ]);
-            }
+
             if ($invitation->getDateMustPromise()->format('U') > time()) {
                 $form = $this->createForm(PromiseType::class, $invitation);
                 $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    /** @var Invitation $invitation */
-                    $invitation = $form->getData();
-                    $invitation->setDatePromised(new \DateTime());
+                if ($form->isSubmitted()) {
+                    if ($form->isValid()) {
+                        /** @var Invitation $invitation */
+                        $invitation = $form->getData();
+                        $invitation->setDatePromised(new \DateTime());
 
-                    $entityManager->persist($invitation);
-                    $entityManager->flush();
-                    $this->addFlash('success', 'Vielen Dank für die Zusage');
-                    return $this->redirectToRoute('promise', ['id' => $id]);
+                        $entityManager->persist($invitation);
+                        $entityManager->flush();
+                        $this->addFlash('success', 'Vielen Dank für die Zusage');
+                        return $this->redirectToRoute('promise', ['id' => $id]);
+                    }
                 }
 
                 $formGallery = $this->createForm(ImageType::class);
                 $formGallery->handleRequest($request);
                 if ($formGallery->isSubmitted() && $formGallery->isValid()) {
                     /** @var UploadedFile $image */
-                    foreach($formGallery->get('images')->getData() as $key => $image){
+                    foreach ($formGallery->get('images')->getData() as $key => $image) {
                         if ($image) {
                             $imageFilename = $fileUploader->upload($image);
                             $imageEntity = new Image();
