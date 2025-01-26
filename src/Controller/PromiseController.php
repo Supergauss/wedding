@@ -41,7 +41,12 @@ class PromiseController extends AbstractController
 
                         $entityManager->persist($invitation);
                         $entityManager->flush();
-                        $this->addFlash('success', 'Vielen Dank für die Zusage');
+                        if($invitation->isPromised()){
+                            $this->addFlash('success', 'Vielen Dank für die Zusage');
+                        } else {
+                            $this->addFlash('success', 'Schade, dass du abgesagt hast.');
+                        }
+
                         return $this->redirectToRoute('promise', ['id' => $id]);
                     }
                 }
