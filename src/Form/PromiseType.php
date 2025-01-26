@@ -17,10 +17,11 @@ class PromiseType extends AbstractType
         /** @var Invitation $invitation */
         $invitation = $builder->getData();
         if($invitation->getNumberGuestsInvited() > 1){
+
             $builder->add('number_guests_promised', IntegerType::class,
             [
                 'attr' => ['max' => $invitation->getNumberGuestsInvited(), 'min' => 0],
-                    'data' => $invitation->getNumberGuestsInvited()
+                'data' => $invitation->getNumberGuestsPromised() ?: $invitation->getNumberGuestsInvited()
             ]);
         }
         $builder
