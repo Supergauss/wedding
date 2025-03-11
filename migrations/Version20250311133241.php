@@ -19,7 +19,7 @@ final class Version20250311133241 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE invitation set date_must_promise="2025-03-31 23:59:59"');
+        $this->addSql('UPDATE invitation set date_must_promise="2025-03-31 23:59:59"');
     }
 
     public function down(Schema $schema): void
