@@ -93,8 +93,13 @@
                     <td>{{ promiseHtml(invitation)| raw }}</td>
                     <td>{{ promiseLink(invitation)| raw }}</td>
                     <td class="text-nowrap">
-                        <a href="{{ path('admin_invitation_delete', {id: invitation.id}) }}" class="btn border border-secondary"><i class="fa-solid fa-box-archive"></i></a>
-                        <a href="{{ path('admin_invitation_edit', {id: invitation.id}) }}" class="btn border border-secondary"><i class="fa-solid fa-pencil"></i></a>
+                        <a href="{{ path('admin_invitation_delete', {id: invitation.id}) }}"
+                           data-label="{{ invitation.name }}" data-method="post"
+                           class="btn btn-danger btn-sm swal-confirm">
+                            <i class="fas fa-trash-alt"></i>
+                            Löschen
+                        </a>
+                        <a href="{{ path('admin_invitation_edit', {id: invitation.id}) }}" class="btn btn-sm btn-warning"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
                     </td>
                 </tr>
             {% endfor %}

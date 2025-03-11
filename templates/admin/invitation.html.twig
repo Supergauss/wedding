@@ -10,6 +10,10 @@
       {{ form_row(form.name) }}
       {{ form_row(form.is_family) }}
       {{ form_row(form.number_guests_invited) }}
+      {% if form.number_guests_promised is defined %}
+         {{ form_row(form.number_guests_promised) }}
+      {% endif %}
+      {{ form_row(form.promised) }}
       <button type="submit" class="btn btn-primary mt-5 float-end">Speichern</button>
       {{ form_end(form) }}
    </main>

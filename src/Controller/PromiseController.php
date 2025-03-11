@@ -24,71 +24,77 @@ class PromiseController extends AbstractController
     }
 
     #[Route('/promise/{id}', name: 'promise', methods: ['GET', 'POST'])]
-    public function familyPromise(string $id, EntityManagerInterface $entityManager, Request $request, FileUploader $fileUploader): Response
-    {
+    public function familyPromise(
+        string $id,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        FileUploader $fileUploader
+    ): Response {
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);
 
         if ($invitation instanceof Invitation) {
+            $form = $this->createForm(PromiseType::class, $invitation);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    /** @var Invitation $invitation */
+                    $invitation = $form->getData();
+                    $invitation->setDatePromised(new \DateTime());
 
-            if ($invitation->getDateMustPromise()->format('U') > time()) {
-                $form = $this->createForm(PromiseType::class, $invitation);
-                $form->handleRequest($request);
-                if ($form->isSubmitted()) {
-                    if ($form->isValid()) {
-                        /** @var Invitation $invitation */
-                        $invitation = $form->getData();
-                        $invitation->setDatePromised(new \DateTime());
-
-                        $entityManager->persist($invitation);
-                        $entityManager->flush();
-                        if($invitation->isPromised()){
-                            $this->addFlash('success', 'Vielen Dank für die Zusage');
-                        } else {
-                            $this->addFlash('success', 'Schade, dass du abgesagt hast.');
-                        }
-
-                        return $this->redirectToRoute('promise', ['id' => $id]);
-                    }
-                }
-
-                $formGallery = $this->createForm(ImageType::class);
-                $formGallery->handleRequest($request);
-                if ($formGallery->isSubmitted() && $formGallery->isValid()) {
-                    /** @var UploadedFile $image */
-                    foreach ($formGallery->get('images')->getData() as $key => $image) {
-                        if ($image) {
-                            $imageFilename = $fileUploader->upload($image);
-                            $imageEntity = new Image();
-                            $imageEntity->setFilename($imageFilename);
-                            $invitation->addImage($imageEntity);
-                            $entityManager->persist($imageEntity);
-                            $entityManager->flush();
-                        }
-                    }
                     $entityManager->persist($invitation);
                     $entityManager->flush();
-                    $this->addFlash('success', 'Die Bilder wurden erfolgreich hinzugefügt und müssen nun freigegeben werden.');
+                    if ($invitation->isPromised()) {
+                        $this->addFlash('success', 'Vielen Dank für die Zusage');
+                    } else {
+                        $this->addFlash('success', 'Schade, dass du abgesagt hast.');
+                    }
+
                     return $this->redirectToRoute('promise', ['id' => $id]);
                 }
-                return $this->render('promise/index.html.twig', [
-                    'invitation' => $invitation,
-                    'form' => $form->createView(),
-                    'formGallery' => $formGallery->createView()
-                ]);
-            } else {
-                $this->addFlash('danger', 'Der Zusagezeitraum ist abgelaufen');
+            }
+
+            $formGallery = $this->createForm(ImageType::class);
+            $formGallery->handleRequest($request);
+            if ($formGallery->isSubmitted() && $formGallery->isValid()) {
+                /** @var UploadedFile $image */
+                foreach ($formGallery->get('images')->getData() as $key => $image) {
+                    if ($image) {
+                        $imageFilename = $fileUploader->upload($image);
+                        $imageEntity = new Image();
+                        $imageEntity->setFilename($imageFilename);
+                        $invitation->addImage($imageEntity);
+                        $entityManager->persist($imageEntity);
+                        $entityManager->flush();
+                    }
+                }
+                $entityManager->persist($invitation);
+                $entityManager->flush();
+                $this->addFlash(
+                    'success',
+                    'Die Bilder wurden erfolgreich hinzugefügt und müssen nun freigegeben werden.'
+                );
                 return $this->redirectToRoute('promise', ['id' => $id]);
             }
-        } else {
 
+            return $this->render('promise/index.html.twig', [
+                'invitation' => $invitation,
+                'form' => $form->createView(),
+                'formGallery' => $formGallery->createView(),
+                'abgelaufen' => ($invitation->getDateMustPromise()->format('U') < time())
+            ]);
+        } else {
             $this->addFlash('danger', 'Anscheinend wurden Sie aber nicht eingeladen, schade schade');
             return $this->redirect($this->generateUrl('app_index'));
         }
     }
 
     #[Route('/gallery/{id}', name: 'gallery', methods: ['GET', 'POST'])]
-    public function gallery(string $id, EntityManagerInterface $entityManager, Request $request, FileUploader $fileUploader): Response
-    {
+    public function gallery(
+        string $id,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        FileUploader $fileUploader
+    ): Response {
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);
         $images = $entityManager->getRepository(Image::class)->findBy(['released' => true]);
         return $this->render('promise/gallery.html.twig', [

@@ -42,8 +42,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/invitation/edit/{id?}', name: 'invitation_edit', methods: ['GET', 'POST'])]
     #[Route('/invitation/new', name: 'invitation_new', methods: ['GET', 'POST'])]
+    #[Route('/invitation/edit/{id}', name: 'invitation_edit', methods: ['GET', 'POST'])]
     public function invitation(Request $request, EntityManagerInterface $entityManager, ?string $id = null): Response
     {
         if ($id) {
@@ -63,7 +63,7 @@ class AdminController extends AbstractController
 
             $entityManager->persist($invitation);
             $entityManager->flush();
-            $this->addFlash('success', $invitation->getName().' wurde angelegt');
+            $this->addFlash('success', $invitation->getName().' wurde angelegt/bearbeitet');
             return $this->redirectToRoute('admin_index');
         }
         return $this->render('admin/invitation.html.twig', [
@@ -71,7 +71,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/invitation/delete/{id}', name: 'invitation_delete', methods: ['GET'])]
+    #[Route('/invitation/delete/{id}', name: 'invitation_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $entityManager, string $id): Response
     {
         $invitation = $entityManager->getRepository(Invitation::class)->find($id);

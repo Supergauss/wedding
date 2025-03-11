@@ -189,7 +189,7 @@
                 Hier findest du die wichtigsten Details und das Formular für {{ possessivpronomen(invitation) }} Zusage. Nach der Hochzeit können auf dieser Seite auch Bilder vom Standesamt hochladen werden.</p>
 
 
-            <h2 id="scrollspyHeading2" class="mt-5">Zusage bitte bis zum 28.02.2025</h2>
+            <h2 id="scrollspyHeading2" class="mt-5">Zusage bitte bis zum 31.03.2025</h2>
             <p class="lead">
                 {% include 'flash_messages.html.twig' %}
                 {% if form is defined %}
@@ -202,7 +202,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="float-end">
-                        <button type="submit" class="btn btn-primary mt-5"><i class="fa-regular fa-heart"></i> Speichern
+                        {{ dump(abgelaufen) }}
+                        <button type="submit" class="btn btn-primary mt-5" {% if abgelaufen %}disabled{% endif %}><i class="fa-regular fa-heart"></i> Speichern
                         </button>
                     </div>
                 </div>

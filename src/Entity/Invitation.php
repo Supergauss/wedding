@@ -61,7 +61,7 @@ class Invitation
     public function __construct()
     {
         $this->is_family = false;
-        $this->date_must_promise = new \DateTime('2025-02-28');
+        $this->date_must_promise = new \DateTime('2025-03-31');
         $this->images = new ArrayCollection();
     }
 
